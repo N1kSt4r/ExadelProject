@@ -1,0 +1,77 @@
+*:root {
+  box-sizing: border-box;
+  background-color: rgb(250, 250, 250);
+}
+
+* {
+  width: 100%;
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+body {
+  width: 100%;
+  height: 100%;
+}
+.dognail {
+  height: 100vh;
+}
+.header, .footer {
+  position: fixed;
+  z-index: 50;
+  height: 40px;
+}
+.header {
+  background-color: rgb(230, 230, 230);
+  height: 40px;
+  position: fixed;
+}
+.user {
+  background-color: rgb(250, 250, 250);
+  height: calc(100% - 80px);
+}
+.user__info {
+  position: relative;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  background-color: white;
+  height: 150px;
+  top: 90px;
+  width: 100%;
+  margin: 0;
+}
+.user__info__name {
+  position: relative;
+  left: calc(50vw - 140px);
+  width: 500px;
+  padding-top: 1em;
+}
+.user__info__description {
+  position: relative;
+  width: 500px;
+  text-align: justify;
+  left: calc(50vw - 140px);
+  padding-top: 0.8em;
+}
+.user__avatar {
+  position: fixed;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  background-color: white;
+  height: 400px;
+  width: 200px;
+  top: 65px;
+  left: calc(50vw - 360px)
+}
+.gallery {
+  position: relative;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background-color: white;
+  height: 300px;
+  width: 500px;
+  top: 110px;
+  left: calc(50vw - 140px);
+  margin-bottom: 60px;
+}
+.footer {
+  background-color: rgb(220, 220, 220);
+  bottom: 0;
+}
