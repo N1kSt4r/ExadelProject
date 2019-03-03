@@ -13,9 +13,6 @@ body {
   width: 100%;
   height: 100%;
 }
-.dognail {
-  height: 100vh;
-}
 .header, .footer {
   position: fixed;
   z-index: 50;
@@ -187,4 +184,42 @@ body {
 }
 .footer__about {
   font-size: 12px;
+}
+
+.message {
+  display: none;
+}
+
+@media screen and (max-width: 744px) {
+  .header {
+    display: inline-flex;
+    position: static;
+    width: 100%;
+  }
+  .header__logo {
+    position: relative;
+    left: calc(50% - 70px);
+    margin: auto 6px auto 0;
+  }
+  .header__sitename {
+    width: auto;
+    position: relative;
+    left: calc(50% - 70px);
+    margin: 5px auto 0 6px;
+  }
+  .header__search, .header__search__button, .header__userinfo, .header__userinfo__avatar, .header__userinfo__name,  .footer, .user{
+    display: none;
+  }
+  .message {
+    display: block;
+    position: absolute;
+    text-align: center;
+    font-size: 5vw;
+    padding: 5vh;
+    height: 30vh;
+    width: 80%;
+    left: 10%;
+    border-radius: 50%;
+    top: calc(40px + 30%);
+  }
 }
