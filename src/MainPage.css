@@ -143,13 +143,13 @@
   height: 300px;
   height: auto;
   width: 500px;
-  margin: 110px 0 0 calc(50vw - 152px);
-  padding: 5px 5px 0 5px;
+  margin: 110px 0 8px calc(50vw - 152px);
+  padding: 9px;
 }
 .gallery__photo {
   height: 150px;
   width: 150px;
-  margin: 5px;
+  margin: 5px 5px 0px 5px;
   background-color: rgb(250, 250, 250);
 }
 .gallery__button {
@@ -157,7 +157,7 @@
   height: 25px;
   border: none;
   top: 0;
-  margin: 5px 0 20px calc(50vw - 152px);
+  margin: 0 0 20px calc(50vw - 152px);
   font-size: 14px;
   border-radius: 0 0 15px 15px;
   background-color: white;
@@ -167,8 +167,8 @@
   width: 200px;
   left: calc(50vw - 370px);
   background-color: white;
-  top: 435px;
-  height: 158px;
+  top: 437px;
+  height: 160px;
   border-radius: 0 0 0 30px;
   box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
@@ -183,6 +183,12 @@
 }
 .footer__about {
   font-size: 12px;
+}
+
+@media screen and (max-height: 600px) and (min-width: 744px) {
+  .footer {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 744px) {
