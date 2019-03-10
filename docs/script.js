@@ -170,7 +170,7 @@ var functions = (() => {
     var overlay = createElement('div', ['image-form-overlay', 'flex', 'transitable-opacity'], [['id', 'overlay']]);
     
     overlay.addEventListener('click', (evt) => {
-      //if (evt.target.id !== 'overlay') return;
+      if (evt.target.className === 'image-form__image' || evt.target.className === 'overlay__likes') return;
       document.body.removeChild(overlay);
     }, false);
 
