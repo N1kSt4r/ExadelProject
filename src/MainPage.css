@@ -157,7 +157,7 @@
   height: 25px;
   border: none;
   top: 0;
-  margin: 0 0 20px calc(50vw - 152px);
+  margin: 0 0 18px calc(50vw - 152px);
   font-size: 14px;
   border-radius: 0 0 15px 15px;
   background-color: white;
@@ -280,7 +280,7 @@
     top: -32rem;
     font-size: 4rem;
     left: 44rem;
-    width: 52rem;
+    width: 51rem;
     margin: 0 0 4rem 0;
   }
   .user__zone__followbutton {
@@ -350,20 +350,6 @@
   transition: opacity 200ms linear; 
 }
 
-.grid {
-  display: grid;
-  grid-template-areas: "img img img img info";
-  grid-gap: 1em;
-  align-items: center;
-}
-@media only screen and (max-width: 1200px) {
-  .grid {
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-areas:
-          "img img img"
-          "info info info";
-  }
-}
 
 .image-form-overlay {
   position: fixed;
@@ -373,44 +359,56 @@
   right: 0;
   z-index: 51;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
 }
 
 .image-form__content {
-  grid-area: info;
+  display: flex;
   width: 80%;
   height: 80%;
   
-  background-color: rgb(50, 50, 50);
+  /*background-color: rgb(50, 50, 50);*/
+  background-color: transparent;
+}
+@media screen and (max-width: 744px) {
+  .image-form__content {
+    flex-direction: column;
+  }
 }
 
 .image-form__image {
-  grid-area: img;
   display: block;
-  max-height: 100%;
-  object-fit: contain;
-  background-color: rgb(50, 50, 50);
+  height: 70vmin;
+  width: 70vmin;
+  background-color: rgb(25, 25, 25);
+  margin: auto;
 }
 
 .image-form__info {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100%;
-  background-color: palevioletred;
+  margin: auto;
+  width: 70vmin;
+  height: 70vmin;
+  background-color: transparent;
 }
 .image-form__info__author {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin: auto;
+  width: 100%;
   height: 60px;
-  background-color: rgb(220, 220, 220);
+  /*background-color: rgb(220, 220, 220);*/
 }
 .image-form__info__author__content {
   text-align: center;
+  color: white;
   font-size: 17px;
   margin: auto auto;
 }
+
 .image-form__info__description {
   background-color: red;
   margin: 0 auto auto auto;
@@ -419,11 +417,13 @@
   padding: 5px;
   width: 100%;
   height: auto;
-  background-color: rgb(230, 230, 230);
+  /*background-color: rgb(230, 230, 230);*/
+  color: white;
+  background-color: transparent;
 }
 
-@media only screen and (max-width: 1200px) {
-  .image-form__info {
-    grid-column: 1 / 4;
+@media screen and (max-height: 380px) {
+  .image-form__info__author {
+    display: none;
   }
 }
