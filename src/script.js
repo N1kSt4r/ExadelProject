@@ -1,9 +1,3 @@
-/*document.getElementsByClassName('gallery__photo')[0].style.backgroundColor = 'red';
-var temp = document.createElement('img');
-temp.className = 'gallery__photo';
-temp.src = './img/userM.svg';
-document.getElementsByClassName('gallery')[0].appendChild(temp);
-alert('check');*/
 var storage = (() => {
   function validatePhotoPost(photoPost) {
     if (typeof(photoPost.id) != typeof('') || photoPost.id == null) 
@@ -26,13 +20,14 @@ var storage = (() => {
     if (photoPost1.hashtags !== undefined) {
       for (i = 0, flag = true; i < photoPost1.hashtags.length; ++i) {
         for (j = 0; j < photoPost2.hashtags.length; ++j) {
-          if (photoPost1.hashtags[i].toLowerCase
-            == photoPost2.hashtags[j].toLowerCase) {
+          console.log(photoPost1.hashtags[i].toLowerCase() + ' ' + photoPost2.hashtags[j].toLowerCase());
+          if (photoPost1.hashtags[i].toLowerCase()
+            == photoPost2.hashtags[j].toLowerCase()) {
             flag = false;
           }
-          if (flag) {
-            return false;
-          }
+        }
+        if (flag) {
+          return false;
         }
       }
     }
@@ -43,7 +38,7 @@ var storage = (() => {
     return true;
   }
   
-  function getPhotoPosts(gallery, skip, top, filterConfig) {
+  function getPhotoPosts(gallery, skip, top, filterConfig, shown) {
     if (skip === undefined) {
       skip = 0;
     }
@@ -51,11 +46,15 @@ var storage = (() => {
       top = 10;
     }
     result = [];
+    var i = 0;
     for (i = skip; top != 0 && i < gallery.length; ++i) {
       if (compare(filterConfig, gallery[i])) {
         addPhotoPost(result, gallery[i]);
         --top;
       }
+    }
+    if (shown !== undefined) {
+      shown.count = i;
     }
     return result;
   }
@@ -102,7 +101,7 @@ var storage = (() => {
     photoPosts[i].createdAt = new Date('2018-02-23T23:00:00');
     photoPosts[i].hashtags = [];
     for (j = 0, n = Math.round(Math.random() * 100) % 3; j < n; ++j) {
-      photoPosts[i].hashtags[j] = hashtags[Math.round(Math.random() * 100) % 3];
+      photoPosts[i].hashtags[j] = hashtags[Math.round(Math.random() * 100) % hashtags.length];
     }
     photoPosts[i].likes = [];
     for (j = 0, n = Math.round(Math.random() * 100) % 3; j < n; ++j) {
@@ -111,6 +110,7 @@ var storage = (() => {
     photoPosts[i].author = photoAuthors[Math.round(Math.random() * 100) % 3];
   };
 
+  document.querySelector(".posts").innerHTML = photoPosts.length + ' posts';
   getPhotoPosts(photoPosts, 0, 6).forEach((element) => {
     var temp = document.createElement('img');
     temp.className = 'gallery__photo';
@@ -119,22 +119,21 @@ var storage = (() => {
     document.getElementsByClassName('gallery')[0].appendChild(temp);
   });
 
-  var shown = 6;
+  var shown = {count: 6};
   if (shown >= photoPosts.length) {
     //first match
     document.querySelector('.gallery__button').style.display = 'none';
   };
 
   function loadMore() {
-    getPhotoPosts(photoPosts, shown, 9/*,  {author: 'Valentin Dytin'}*/).forEach((element) => {
+    getPhotoPosts(photoPosts, shown.count, 9, {}/* {hashtags: ['#iwanttoeat']}*/, shown).forEach((element) => {
       var temp = document.createElement('IMG');
       temp.className = 'gallery__photo';
       temp.src = element.photoLink;
       temp.id = element.id;
       document.getElementsByClassName('gallery')[0].appendChild(temp);
     });
-    shown = shown + 9;
-    if (shown >= photoPosts.length) {
+    if (shown.count >= photoPosts.length) {
       document.getElementsByClassName('gallery__button')[0].style.display = 'none';
     };
   };
@@ -166,8 +165,15 @@ var storage = (() => {
 
     var contentWrapper = createElement('div', ['image-form__content', 'transitable-opacity']);
     
-    var image = createElement('img', ['image-form__image'], [['src', img.src]])
-    contentWrapper.appendChild(image);
+    var imageContainer = createElement('div', ['image-form__imageCon']);
+    var image = createElement('img', ['image-form__image'], [['src', img.src]]);
+    var overlayLikes = createElement('div', ['overlay__likes']);
+    var likesCount = createElement('div', ['likes']);
+    likesCount.innerHTML =  photoPost.likes.length + ' likes';
+    overlayLikes.appendChild(likesCount);
+    imageContainer.appendChild(image);
+    imageContainer.appendChild(overlayLikes)
+    contentWrapper.appendChild(imageContainer);
     
     var imageInfo = createElement('div', ['image-form__info']);
 
@@ -202,21 +208,6 @@ var storage = (() => {
     }, 0);
 
     return overlay;
-  }
-
-  function descriptionWidth(string) {
-    var length = 0;
-    var words = string.split(' ');  
-    var ans = '';
-    words.forEach(word => {
-      length = length + word.length;
-      if (length > 40) {
-        ans = ans + '<br>';
-        length = 0;
-      }
-      ans = ans + word + ' ';
-    });
-    return ans;
   }
 
   return {
