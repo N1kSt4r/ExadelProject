@@ -82,7 +82,7 @@ class Storage {
     const result = [];
     let i = 0;
     for (i = skipt; topt !== 0 && i < this.size(); i += 1) {
-      if (this.compare(filterConfig, this._photoPosts[i])) {
+      if (Storage.compare(filterConfig, this._photoPosts[i])) {
         result[result.length] = this._photoPosts[i];
         topt -= 1;
       }
@@ -196,7 +196,7 @@ class Storage {
 
   createImageForm(img) {
     const photoPost = this.get(img.id);
-    const overlay = this.createElement('div', ['image-form-overlay', 'flex', 'transitable-opacity'], [['id', 'overlay']]);
+    const overlay = Storage.createElement('div', ['image-form-overlay', 'flex', 'transitable-opacity'], [['id', 'overlay']]);
 
     overlay.addEventListener('click', (evt) => {
       if (evt.target.className === 'image-form__image' || evt.target.className === 'overlay__likes') {
@@ -205,34 +205,34 @@ class Storage {
       document.body.removeChild(overlay);
     }, false);
 
-    const contentWrapper = this.createElement('div', ['image-form__content', 'transitable-opacity']);
+    const contentWrapper = Storage.createElement('div', ['image-form__content', 'transitable-opacity']);
 
-    const imageContainer = this.createElement('div', ['image-form__imageCon']);
-    const image = this.createElement('img', ['image-form__image'], [['src', img.src]]);
-    const overlayLikes = this.createElement('div', ['overlay__likes']);
-    const likesCount = this.createElement('div', ['likes']);
+    const imageContainer = Storage.createElement('div', ['image-form__imageCon']);
+    const image = Storage.createElement('img', ['image-form__image'], [['src', img.src]]);
+    const overlayLikes = Storage.createElement('div', ['overlay__likes']);
+    const likesCount = Storage.createElement('div', ['likes']);
     likesCount.innerHTML = `${photoPost.likes.length} likes`;
     overlayLikes.appendChild(likesCount);
     imageContainer.appendChild(image);
     imageContainer.appendChild(overlayLikes);
     contentWrapper.appendChild(imageContainer);
 
-    const imageInfo = this.createElement('div', ['image-form__info']);
-    const imageAuthor = this.createElement('div', ['image-form__info__author']);
-    const imageAuthorName = this.createElement('p', ['image-form__info__author__content']);
+    const imageInfo = Storage.createElement('div', ['image-form__info']);
+    const imageAuthor = Storage.createElement('div', ['image-form__info__author']);
+    const imageAuthorName = Storage.createElement('p', ['image-form__info__author__content']);
     imageAuthorName.innerHTML = photoPost.author;
-    const imageAuthorDate = this.createElement('p', ['image-form__info__author__content']);
+    const imageAuthorDate = Storage.createElement('p', ['image-form__info__author__content']);
     [imageAuthorDate.innerHTML] = (`${photoPost.createdAt}`).split('G');
     imageAuthor.appendChild(imageAuthorName);
     imageAuthor.appendChild(imageAuthorDate);
     imageInfo.appendChild(imageAuthor);
 
-    const imageDescription = this.createElement('p', ['image-form__info__description']);
+    const imageDescription = Storage.createElement('p', ['image-form__info__description']);
     imageDescription.innerHTML = photoPost.descriprion;
     imageInfo.appendChild(imageDescription);
 
     if (photoPost.hashtags.length !== 0) {
-      const imageTags = this.createElement('p', ['image-form__info__description']);
+      const imageTags = Storage.createElement('p', ['image-form__info__description']);
       for (let i = 0; i < photoPost.hashtags.length; i += 1) {
         imageTags.innerHTML += `${photoPost.hashtags[i]} `;
       }
