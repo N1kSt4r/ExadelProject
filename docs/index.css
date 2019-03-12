@@ -299,7 +299,7 @@
     width: 100%;
     margin: 41rem 0 0 0 ;
     top: 41.2rem;
-    padding: 0 0 3rem 0;
+    padding: 1rem 0 3rem 0;
   }
   .gallery__photo {
     width: 45%;
@@ -323,6 +323,9 @@
     border-radius: 0;
     margin: 0;
     padding: 2rem;
+  }
+  .noPhotoMessage {
+    margin: 0;
   }
 
   .footer__email, .footer__about, .footer__info {
@@ -461,4 +464,10 @@
   .image-form__info__author {
     display: none;
   }
+}
+
+.noPhotoMessage {
+  text-align: center;;
+  margin: 5px;
+  font-size: 4vmin;
 }
