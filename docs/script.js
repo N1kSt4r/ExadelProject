@@ -1,27 +1,47 @@
 /* eslint-disable no-param-reassign */
+const userPage = true;
+const userName = 'ThisUser';
+
+let ID = 1;
+class Photo {
+  constructor(desctiption, photoLink, date, hashtags, likes, author) {
+    this.id = `${ID}`;
+    ID += 1;
+    this.desctiption = desctiption;
+    this.photoLink = photoLink;
+    this.createdAt = date;
+    this.hashtags = hashtags.split(' ');
+    this.likes = likes;
+    this.author = author;
+  }
+}
+
 function generate() {
   const desctiptions = ['Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime magnam libero similique.',
     'Molestiae vel rem cumque reiciendis adipisci nesciunt perspiciatis aspernatur aliquam!',
     'Maxime magnam libero similique, molestiae vel rem cumque reiciendis adipisci nesciunt.'];
   const photoLinks = ['./img/users.svg', './img/userM.svg', './img/userF.svg', './img/photo.svg'];
   const photoAuthors = ['Valentin Dytin', 'Vladimir Putin', 'Vladislav Nytin'];
-  const hashtags = ['#sitejivi', '#helpPleaseWithCSS', '#testHashTag', '#razdvatri', '#goDota', '#IwantToEat'];
+  const hashtags = ['sitejivi', 'helpPleaseWithCSS', 'testHashTag', 'razdvatri', 'goDota', 'IwantToEat'];
   const photoPosts = [];
   for (let i = 0; i < 20; i += 1) {
+    let hashtagsC = '';
+    for (let j = 0, n = Math.round(Math.random() * 100) % 3; j < n; j += 1) {
+      hashtagsC += `${hashtags[Math.round(Math.random() * 100) % hashtags.length]} `;
+    }
+    const likes = [];
+    for (let j = 0, n = Math.round(Math.random() * 100) % 3; j < n; j += 1) {
+      likes[j] = photoAuthors[Math.round(Math.random() * 100) % 3];
+    }
     photoPosts[i] = {};
-    photoPosts[i].id = `${i + 1}`;
-    photoPosts[i].desctiption = desctiptions[Math.round(Math.random() * 100) % 3];
-    photoPosts[i].photoLink = photoLinks[(Math.round(Math.random() * 100)) % 4];
-    photoPosts[i].createdAt = new Date(`2018-02-${(Math.round(Math.random() * 100) % 18) + 10}T${(Math.round(Math.random() * 100) % 11) + 10}:${(Math.round(Math.random() * 100) % 49) + 10}:${(Math.round(Math.random() * 100) % 49) + 10}`);
-    photoPosts[i].hashtags = [];
-    for (let j = 0, n = Math.round(Math.random() * 100) % 3; j < n; j += 1) {
-      photoPosts[i].hashtags[j] = hashtags[Math.round(Math.random() * 100) % hashtags.length];
-    }
-    photoPosts[i].likes = [];
-    for (let j = 0, n = Math.round(Math.random() * 100) % 3; j < n; j += 1) {
-      photoPosts[i].likes[j] = photoAuthors[Math.round(Math.random() * 100) % 3];
-    }
-    photoPosts[i].author = photoAuthors[Math.round(Math.random() * 100) % 3];
+    photoPosts[i] = new Photo(
+      desctiptions[Math.round(Math.random() * 100) % 3],
+      photoLinks[(Math.round(Math.random() * 100)) % 4],
+      new Date(`2018-02-${(Math.round(Math.random() * 100) % 18) + 10}T${(Math.round(Math.random() * 100) % 11) + 10}:${(Math.round(Math.random() * 100) % 49) + 10}:${(Math.round(Math.random() * 100) % 49) + 10}`),
+      hashtagsC,
+      likes,
+      photoAuthors[Math.round(Math.random() * 100) % 3]
+    );
   }
   return photoPosts;
 }
@@ -33,49 +53,11 @@ class Storage {
     this.setAll(generate());
   }
 
-  static validate(photoPost) {
-    if (typeof (photoPost.id) !== typeof ('') || !photoPost.id) {
-      return false;
-    }
-    if (typeof (photoPost.desctiption) !== typeof ('') || !photoPost.desctiption) {
-      return false;
-    }
-    if (typeof (photoPost.photoLink) !== typeof ('') || !photoPost.photoLink) {
-      return false;
-    }
-    if (typeof (photoPost.author) !== typeof ('') || !photoPost.author) {
-      return false;
-    }
-    if ((typeof (photoPost.createdAt) !== typeof (new Date())
-     && photoPost.createdAt !== 'invalid date')
-     || photoPost.id == null) {
-      return false;
-    }
-    if (typeof (photoPost.hashtags) !== typeof ([]) || !photoPost.hashtags) {
-      return false;
-    }
-    for (let i = 0; i < photoPost.hashtags.length; i += 1) {
-      if (typeof (photoPost.hashtags[i]) !== typeof ('') || !photoPost.hashtags[i]) {
-        return false;
-      }
-    }
-    if (typeof (photoPost.likes) !== typeof ([]) || !photoPost.likes) {
-      return false;
-    }
-    for (let i = 0; i < photoPost.likes.length; i += 1) {
-      if (typeof (photoPost.likes[i]) !== typeof ('') || !photoPost.likes[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   setAll(photos) {
     this._photoPosts.splice(0, this._photoPosts.length);
     photos.forEach((photo) => {
       this.add(photo);
     });
-    this._photoPosts.sort((l, r) => r.createdAt.getTime() - l.createdAt.getTime());
   }
 
   getPage(skip, top, filterConfig) {
@@ -104,10 +86,8 @@ class Storage {
   }
 
   add(photoPost) {
-    if (!Storage.validate(photoPost)) {
-      return false;
-    }
     this._photoPosts[this.size()] = photoPost;
+    this._photoPosts.sort((l, r) => r.createdAt.getTime() - l.createdAt.getTime());
     return true;
   }
 
@@ -195,6 +175,8 @@ class Storage {
       temp.id = element.id;
       document.getElementsByClassName('gallery')[0].appendChild(temp);
     });
+    
+    document.querySelector('.posts').innerHTML = `${this.size()} posts`;
     this.checkGalleryButton();
   }
 
@@ -214,7 +196,6 @@ class Storage {
         this.remove(img.id);
         const node = document.getElementById(img.id);
         document.querySelector('.gallery').removeChild(node);
-        document.querySelector('.posts').innerHTML = `${this.size()} posts`;
         this._shown.count -= 1;
         this.loadMore(1);
         document.body.removeChild(overlay);
@@ -226,18 +207,22 @@ class Storage {
         document.querySelector('.image-form__info__description__area').value = temp;
         temp = document.querySelector('.image-form__info__tags').innerHTML;
         document.querySelector('.image-form__info__tags').outerHTML = '<textarea class="image-form__info__tags__area" maxlength="120"></textarea>';
-        document.querySelector('.image-form__info__tags__area').value = temp;
+        document.querySelector('.image-form__info__tags__area').value = temp.replace(/[^a-zA-Z0-9 ]/g, '');
         document.querySelector('.button-container').innerHTML = '<button class="image-form__info__description image-form__savebutton">save</button>';
         return;
       }
       if (evt.target.className.includes('savebutton')) {
         const photo = this.get(img.id);
         let temp = document.querySelector('.image-form__info__description__area').value;
-        photo.desctiption = temp;
         document.querySelector('.image-form__info__description__area').outerHTML = `<p class="image-form__info__description">${temp}</p>`;
-        temp = document.querySelector('.image-form__info__tags__area').value;
+
+        temp = (document.querySelector('.image-form__info__tags__area').value || '').split(' ');
         photo.hashtags = temp;
-        document.querySelector('.image-form__info__tags__area').outerHTML = `<p class="image-form__info__tags">${temp}</p>`;
+        let tags = '';
+        for (let i = 0; i < temp.length - 1; i += 1) {
+          tags += `#${photoPost.hashtags[i]} `;
+        }
+        document.querySelector('.image-form__info__tags__area').outerHTML = `<p class="image-form__info__tags">${tags}</p>`;
         const buttonContainer = document.querySelector('.button-container');
         buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">edit</button>';
         buttonContainer.innerHTML += '<button class="image-form__info__description image-form__deletebutton">delete</button>';
@@ -277,21 +262,76 @@ class Storage {
     imageDescription.innerHTML = photoPost.desctiption;
     imageInfo.appendChild(imageDescription);
 
-    if (photoPost.hashtags.length !== 0) {
-      const imageTags = Storage.createElement('p', ['image-form__info__tags']);
-      for (let i = 0; i < photoPost.hashtags.length; i += 1) {
-        imageTags.innerHTML += `${photoPost.hashtags[i]} `;
+    const imageTags = Storage.createElement('p', ['image-form__info__tags']);
+    for (let i = 0; i < photoPost.hashtags.length; i += 1) {
+      if (photoPost.hashtags[i]) {
+        imageTags.innerHTML += `#${photoPost.hashtags[i]} `;
       }
-      imageInfo.appendChild(imageTags);
+    }
+    imageInfo.appendChild(imageTags);
+
+    if (userPage) {
+      const buttonContainer = Storage.createElement('div', ['flex', 'button-container']);
+      buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">edit</button>';
+      buttonContainer.innerHTML += '<button class="image-form__info__description image-form__deletebutton">delete</button>';
+      imageInfo.appendChild(buttonContainer);
     }
 
+    contentWrapper.appendChild(imageInfo);
+    overlay.appendChild(contentWrapper);
+
+    setTimeout(() => {
+      overlay.style.opacity = '1';
+      contentWrapper.style.opacity = '1';
+    }, 0);
+
+    return overlay;
+  }
+
+  createAddForm() {
+    const overlay = Storage.createElement('div', ['image-form-overlay', 'flex', 'transitable-opacity'], [['id', 'overlay']]);
+
+    overlay.addEventListener('click', (evt) => {
+      if (evt.target.className.includes('editbutton')) {
+        if (document.querySelector('.add__form__link').value.length > 0
+        && document.querySelector('.add__form__description').value.length > 0) {
+          this.add(new Photo(
+            document.querySelector('.add__form__description').value || '',
+            document.querySelector('.add__form__link').value || '',
+            new Date(),
+            document.querySelector('.add__form__tags').value || '',
+            [],
+            userName
+          ));
+          this.reset();
+          this.loadMore();
+          document.querySelector('.posts').innerHTML = `${this.size()} posts`;
+          document.body.removeChild(overlay);
+          return;
+        }
+        // eslint-disable-next-line no-alert
+        alert('incorrect data');
+      }
+      if (evt.target.className.includes('image-form__info')) {
+        return;
+      }
+      document.body.removeChild(overlay);
+    }, false);
+
+    const contentWrapper = Storage.createElement('div', ['image-form__content', 'transitable-opacity']);
+
+    const imageInfo = Storage.createElement('div', ['image-form__info']);
+    imageInfo.innerHTML = '<textarea class="image-form__info__description__area add__form__description" maxlength="120" placeholder="description"></textarea>'
+    + '<textarea class="image-form__info__tags__area add__form__tags" maxlength="120" placeholder="tags"></textarea>'
+    + '<textarea class="image-form__info__tags__area add__form__link" maxlength="120" placeholder="link"></textarea>';
+
     const buttonContainer = Storage.createElement('div', ['flex', 'button-container']);
-    buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">edit</button>';
-    buttonContainer.innerHTML += '<button class="image-form__info__description image-form__deletebutton">delete</button>';
+    buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">Add</button>';
     imageInfo.appendChild(buttonContainer);
 
     contentWrapper.appendChild(imageInfo);
     overlay.appendChild(contentWrapper);
+
 
     setTimeout(() => {
       overlay.style.opacity = '1';
@@ -314,22 +354,18 @@ class Storage {
     while (gallery.firstChild) {
       gallery.removeChild(gallery.firstChild);
     }
-    this._photoPosts = [];
     this._shown.count = 0;
   }
 }
 
 const gallery = new Storage();
 
-gallery.remove(2);
-gallery.edit(3, { desctiption: 'Look it\'s really works!', hashtags: ['#IdidIT', '#WebIsPain'] });
 if (gallery.size() !== 0) {
   gallery.loadMore();
 } else {
   gallery.displayZeroPhoto();
 }
 
-document.querySelector('.posts').innerHTML = `${gallery.size()} posts`;
 
 document.querySelector('.gallery__button').addEventListener('click', () => {
   gallery.loadMore();
@@ -339,8 +375,16 @@ document.querySelector('.gallery').addEventListener('click', (event) => {
   if (event.target.nodeName !== 'IMG') {
     return;
   }
-  console.log(event.target);
   const img = event.target;
   const form = gallery.createImageForm(img);
   document.body.appendChild(form);
 }, false);
+
+
+if (userPage) {
+  const button = document.querySelector('.user__zone__followbutton');
+  button.innerHTML = 'Add photo';
+  button.addEventListener('click', () => {
+    document.body.appendChild(gallery.createAddForm());
+  }, false);
+}
