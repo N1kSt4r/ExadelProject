@@ -168,7 +168,7 @@ class Storage {
 
   loadMore(number) {
     number = number || 6;
-    this.getPage(this._shown.count, number, {}/* {hashtags: ['#iwanttoeat']} */).forEach((element) => {
+    this.getPage(this._shown.count, number, {}).forEach((element) => {
       const temp = document.createElement('IMG');
       temp.className = 'gallery__photo';
       temp.src = element.photoLink;
@@ -207,7 +207,7 @@ class Storage {
         document.querySelector('.image-form__info__description__area').value = temp;
         temp = document.querySelector('.image-form__info__tags').innerHTML;
         document.querySelector('.image-form__info__tags').outerHTML = '<textarea class="image-form__info__tags__area" maxlength="120"></textarea>';
-        document.querySelector('.image-form__info__tags__area').value = temp.replace(/[^a-zA-Z0-9 ]/g, '');
+        document.querySelector('.image-form__info__tags__area').value = temp.replace(/[#]/g, '');
         document.querySelector('.button-container').innerHTML = '<button class="image-form__info__description image-form__savebutton">save</button>';
         return;
       }
@@ -216,11 +216,14 @@ class Storage {
         let temp = document.querySelector('.image-form__info__description__area').value;
         document.querySelector('.image-form__info__description__area').outerHTML = `<p class="image-form__info__description">${temp}</p>`;
 
-        temp = (document.querySelector('.image-form__info__tags__area').value || '').split(' ');
-        photo.hashtags = temp;
+        const tagsValue = document.querySelector('.image-form__info__tags__area').value;
+        temp = (tagsValue || '').trim().split(/\s+/);
         let tags = '';
-        for (let i = 0; i < temp.length - 1; i += 1) {
-          tags += `#${photoPost.hashtags[i]} `;
+        if (tagsValue.length !== 0) {
+          photo.hashtags = temp;
+          for (let i = 0; i < temp.length; i += 1) {
+            tags += `#${photoPost.hashtags[i]} `;
+          }
         }
         document.querySelector('.image-form__info__tags__area').outerHTML = `<p class="image-form__info__tags">${tags}</p>`;
         const buttonContainer = document.querySelector('.button-container');
@@ -366,7 +369,6 @@ if (gallery.size() !== 0) {
   gallery.displayZeroPhoto();
 }
 
-
 document.querySelector('.gallery__button').addEventListener('click', () => {
   gallery.loadMore();
 }, false);
@@ -379,7 +381,6 @@ document.querySelector('.gallery').addEventListener('click', (event) => {
   const form = gallery.createImageForm(img);
   document.body.appendChild(form);
 }, false);
-
 
 if (userPage) {
   const button = document.querySelector('.user__zone__followbutton');

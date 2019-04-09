@@ -1,0 +1,53 @@
+* {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+.header, footer {
+  width: 100%;
+  background-color: rgb(230, 230, 230);
+  height: 40px;
+}
+.header__logo {
+  position: relative;
+  height: 36px;
+  width: 36px;
+  margin: 2px;
+  left: calc(50vw - 85px);
+}
+.header__sitename {
+  position: absolute;
+  height: 36px;
+  width: 200px;
+  text-align: center;
+  font-size: 25px;
+  margin: 5px;
+  top: 0;
+  left: calc(50vw - 90px);
+}
+
+.log-body {
+  display: flex;
+  height: calc(100vh - 80px);
+  width: 100%;
+  background: red;
+}
+.log-form {
+  height: 150px;
+  width: calc(300px + 25% );
+  background: orange;
+  margin: auto auto;
+}
+
+
+.footer {
+  display: flex;
+  flex-direction: row;
+}
+.footer__email, .footer__about, .footer__info {
+  text-align: center;
+  margin: auto;
+}
+.footer__info, .footer__email, .footer__about {
+  font-size: 13px;
+}
