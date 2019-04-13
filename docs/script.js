@@ -68,7 +68,7 @@ class Storage {
     let i = 0;
     for (i = skipt; topt !== 0 && i < this.size(); i += 1) {
       if (Storage.compare(filterConfig, this._photoPosts[i])) {
-        result[result.length] = this._photoPosts[i];
+        result.push(this._photoPosts[i]);
         topt -= 1;
       }
     }
@@ -110,12 +110,12 @@ class Storage {
     }
     if (editParams.hashtags !== undefined && typeof (editParams.hashtags) === typeof ([])) {
       for (let i = 0; i < editParams.hashtags.length; i += 1) {
-        if (typeof ('') !== typeof (editParams.hashtags[i])) {
+        if (typeof (editParams.hashtags[i]) !== 'string') {
           return false;
         }
       }
     }
-    if (editParams.desctiption !== undefined && typeof (editParams.desctiption) !== typeof ('')) {
+    if (editParams.desctiption !== undefined && typeof (editParams.desctiption) !== 'string') {
       return false;
     }
 
@@ -175,7 +175,7 @@ class Storage {
       temp.id = element.id;
       document.getElementsByClassName('gallery')[0].appendChild(temp);
     });
-    
+
     document.querySelector('.posts').innerHTML = `${this.size()} posts`;
     this.checkGalleryButton();
   }
@@ -187,48 +187,60 @@ class Storage {
     return element;
   }
 
+  deletePhotoPost(img) {
+    this.remove(img.id);
+    const node = document.getElementById(img.id);
+    document.querySelector('.gallery').removeChild(node);
+    this._shown.count -= 1;
+    this.loadMore(1);
+  }
+
+  static editPhotoPost() {
+    let temp = document.querySelector('.image-form__info__description').innerHTML;
+    document.querySelector('.image-form__info__description').outerHTML = '<textarea class="image-form__info__description__area" maxlength="120"></textarea>';
+    document.querySelector('.image-form__info__description__area').value = temp;
+    temp = document.querySelector('.image-form__info__tags').innerHTML;
+    document.querySelector('.image-form__info__tags').outerHTML = '<textarea class="image-form__info__tags__area" maxlength="120"></textarea>';
+    document.querySelector('.image-form__info__tags__area').value = temp.replace(/[#]/g, '');
+    document.querySelector('.button-container').innerHTML = '<button class="image-form__info__description image-form__savebutton">save</button>';
+  }
+
+  saveChangesPhotoPost(img) {
+    const photo = this.get(img.id);
+    let temp = document.querySelector('.image-form__info__description__area').value;
+    document.querySelector('.image-form__info__description__area').outerHTML = `<p class="image-form__info__description">${temp}</p>`;
+
+    const tagsValue = document.querySelector('.image-form__info__tags__area').value;
+    temp = (tagsValue || '').trim().split(/\s+/);
+    let tags = '';
+    if (tagsValue.length !== 0) {
+      photo.hashtags = temp;
+      for (let i = 0; i < temp.length; i += 1) {
+        tags += `#${photo.hashtags[i]} `;
+      }
+    }
+    document.querySelector('.image-form__info__tags__area').outerHTML = `<p class="image-form__info__tags">${tags}</p>`;
+    const buttonContainer = document.querySelector('.button-container');
+    buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">edit</button>';
+    buttonContainer.innerHTML += '<button class="image-form__info__description image-form__deletebutton">delete</button>';
+  }
+
   createImageForm(img) {
     const photoPost = this.get(img.id);
     const overlay = Storage.createElement('div', ['image-form-overlay', 'flex', 'transitable-opacity'], [['id', 'overlay']]);
 
     overlay.addEventListener('click', (evt) => {
       if (evt.target.className.includes('deletebutton')) {
-        this.remove(img.id);
-        const node = document.getElementById(img.id);
-        document.querySelector('.gallery').removeChild(node);
-        this._shown.count -= 1;
-        this.loadMore(1);
+        this.deletePhotoPost(img);
         document.body.removeChild(overlay);
         return;
       }
       if (evt.target.className.includes('editbutton')) {
-        let temp = document.querySelector('.image-form__info__description').innerHTML;
-        document.querySelector('.image-form__info__description').outerHTML = '<textarea class="image-form__info__description__area" maxlength="120"></textarea>';
-        document.querySelector('.image-form__info__description__area').value = temp;
-        temp = document.querySelector('.image-form__info__tags').innerHTML;
-        document.querySelector('.image-form__info__tags').outerHTML = '<textarea class="image-form__info__tags__area" maxlength="120"></textarea>';
-        document.querySelector('.image-form__info__tags__area').value = temp.replace(/[#]/g, '');
-        document.querySelector('.button-container').innerHTML = '<button class="image-form__info__description image-form__savebutton">save</button>';
+        Storage.editPhotoPost();
         return;
       }
       if (evt.target.className.includes('savebutton')) {
-        const photo = this.get(img.id);
-        let temp = document.querySelector('.image-form__info__description__area').value;
-        document.querySelector('.image-form__info__description__area').outerHTML = `<p class="image-form__info__description">${temp}</p>`;
-
-        const tagsValue = document.querySelector('.image-form__info__tags__area').value;
-        temp = (tagsValue || '').trim().split(/\s+/);
-        let tags = '';
-        if (tagsValue.length !== 0) {
-          photo.hashtags = temp;
-          for (let i = 0; i < temp.length; i += 1) {
-            tags += `#${photoPost.hashtags[i]} `;
-          }
-        }
-        document.querySelector('.image-form__info__tags__area').outerHTML = `<p class="image-form__info__tags">${tags}</p>`;
-        const buttonContainer = document.querySelector('.button-container');
-        buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">edit</button>';
-        buttonContainer.innerHTML += '<button class="image-form__info__description image-form__deletebutton">delete</button>';
+        this.saveChangesPhotoPost(img);
         return;
       }
       if (evt.target.className === 'image-form__image'

@@ -55,3 +55,4 @@
    prefer-const: 2
    no-underscore-dangle: 0
    linebreak-style: ["error", "windows"]
+   class-methods-use-this: ["error", "never"]
