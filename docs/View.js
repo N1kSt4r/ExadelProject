@@ -62,13 +62,40 @@ class View {
     buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">edit</button>';
     buttonContainer.innerHTML += '<button class="image-form__info__description image-form__deletebutton">delete</button>';
   }
-  createImageForm(img) {
+  showPhoto(img) {
     const photoPost = this._gallery.get(img.id);
-    const overlay = View.createElement('div', ['image-form-overlay', 'flex', 'transitable-opacity'], [['id', 'overlay']]);
-    overlay.addEventListener('click', (evt) => {
+    const popupWindow = document.querySelector('.viewImage').content.cloneNode(true);
+    
+    document.body.appendChild(popupWindow);
+    document.body.querySelector('.likes').innerHTML = `${photoPost.likes.length} likes`;
+    document.body.querySelector('.image-form__info__author__content__name').innerHTML = photoPost.author;
+    [document.body.querySelector('.image-form__info__author__content__date').innerHTML] = (`${photoPost.createdAt}`).split('G');
+    document.body.querySelector('.image-form__image').src = photoPost.photoLink;
+    document.body.querySelector('.image-form__info__description').innerHTML = photoPost.description;
+
+    let imageTags = document.body.querySelector('.image-form__info__tags');
+    for (let i = 0; i < photoPost.hashtags.length; i += 1) {
+      if (photoPost.hashtags[i]) {
+        imageTags.innerHTML += `#${photoPost.hashtags[i]} `;
+      }
+    }
+
+    if (!userPage) {
+      document.querySelector('.button-container').innerHTML = '';
+    }
+
+    setTimeout(() => {
+      let opacityElems = document.getElementsByClassName('transitable-opacity');
+      for (let i = 0; i < opacityElems.length; i += 1) {
+        opacityElems[i].style.opacity = '1';
+      }
+    }, 0);
+    
+
+    document.getElementById('overlay').addEventListener('click', (evt) => {
       if (evt.target.className.includes('deletebutton')) {
         this.deletePhotoPost(img);
-        document.body.removeChild(overlay);
+        document.body.removeChild(document.getElementById('overlay'));
         return;
       }
       if (evt.target.className.includes('editbutton')) {
@@ -84,50 +111,8 @@ class View {
         || evt.target.className.includes('image-form__info')) {
         return;
       }
-      document.body.removeChild(overlay);
+      document.body.removeChild(document.getElementById('overlay'));
     }, false);
-    const contentWrapper = View.createElement('div', ['image-form__content', 'transitable-opacity']);
-    const imageContainer = View.createElement('div', ['image-form__imageCon']);
-    const image = View.createElement('img', ['image-form__image'], [['src', img.src]]);
-    const overlayLikes = View.createElement('div', ['overlay__likes']);
-    const likesCount = View.createElement('div', ['likes']);
-    likesCount.innerHTML = `${photoPost.likes.length} likes`;
-    overlayLikes.appendChild(likesCount);
-    imageContainer.appendChild(image);
-    imageContainer.appendChild(overlayLikes);
-    contentWrapper.appendChild(imageContainer);
-    const imageInfo = View.createElement('div', ['image-form__info']);
-    const imageAuthor = View.createElement('div', ['image-form__info__author']);
-    const imageAuthorName = View.createElement('p', ['image-form__info__author__content']);
-    imageAuthorName.innerHTML = photoPost.author;
-    const imageAuthorDate = View.createElement('p', ['image-form__info__author__content']);
-    [imageAuthorDate.innerHTML] = (`${photoPost.createdAt}`).split('G');
-    imageAuthor.appendChild(imageAuthorName);
-    imageAuthor.appendChild(imageAuthorDate);
-    imageInfo.appendChild(imageAuthor);
-    const imageDescription = View.createElement('p', ['image-form__info__description']);
-    imageDescription.innerHTML = photoPost.desctiption;
-    imageInfo.appendChild(imageDescription);
-    const imageTags = View.createElement('p', ['image-form__info__tags']);
-    for (let i = 0; i < photoPost.hashtags.length; i += 1) {
-      if (photoPost.hashtags[i]) {
-        imageTags.innerHTML += `#${photoPost.hashtags[i]} `;
-      }
-    }
-    imageInfo.appendChild(imageTags);
-    if (userPage) {
-      const buttonContainer = View.createElement('div', ['flex', 'button-container']);
-      buttonContainer.innerHTML = '<button class="image-form__info__description image-form__editbutton">edit</button>';
-      buttonContainer.innerHTML += '<button class="image-form__info__description image-form__deletebutton">delete</button>';
-      imageInfo.appendChild(buttonContainer);
-    }
-    contentWrapper.appendChild(imageInfo);
-    overlay.appendChild(contentWrapper);
-    setTimeout(() => {
-      overlay.style.opacity = '1';
-      contentWrapper.style.opacity = '1';
-    }, 0);
-    return overlay;
   }
   createAddForm() {
     const overlay = View.createElement('div', ['image-form-overlay', 'flex', 'transitable-opacity'], [['id', 'overlay']]);

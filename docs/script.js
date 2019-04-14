@@ -18,9 +18,7 @@ document.querySelector('.gallery').addEventListener('click', (event) => {
   if (event.target.nodeName !== 'IMG') {
     return;
   }
-  const img = event.target;
-  const form = gallery.createImageForm(img);
-  document.body.appendChild(form);
+  gallery.showPhoto(event.target);
 }, false);
 
 if (userPage) {

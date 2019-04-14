@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>User Name</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="index.css">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>User Name</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="index.css">
   </head>
-<body>
+  <body>
     <header class="header">
       <img class="header__logo" src="./img/ico.svg" alt="icon">
       <p class="header__sitename">sitename</p>
@@ -21,7 +21,8 @@
     <article class="user">
       <section class="user__info">
         <h3 class="user__info__name">User Name</h3>
-        <p class="user__info__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime magnam libero similique, molestiae vel rem cumque reiciendis adipisci nesciunt perspiciatis aspernatur aliquam nemo incidunt laborum dolorum quae! Excepturi, maxime asperiores!
+        <p class="user__info__description">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime magnam libero similique, molestiae vel rem cumque reiciendis adipisci nesciunt perspiciatis aspernatur aliquam nemo incidunt laborum dolorum quae! Excepturi, maxime asperiores!
         </p>
       </section>
       <section class="user__zone">
@@ -50,5 +51,29 @@
     <script src="./Model.js"></script>
     <script src="./View.js"></script>
     <script src="./script.js"></script>
-</body>
+  </body>
+  <template class="viewImage">
+    <div class="image-form-overlay flex transitable-opacity" id="overlay">
+      <div class="image-form__content transitable-opacity">
+        <div class="image-form__imageCon">
+          <img class="image-form__image">
+          <div class="overlay__likes">
+            <div class="likes"></div>
+          </div>
+        </div>
+        <div class="image-form__info">
+          <div class="image-form__info__author">
+            <p class="image-form__info__author__content__name"></p>
+            <p class="image-form__info__author__content__date"></p>
+          </div>
+          <p class="image-form__info__description"></p>
+          <p class="image-form__info__tags"></p>
+          <div class="flex button-container">
+            <button class="image-form__info__description image-form__editbutton">edit</button>
+            <button class="image-form__info__description image-form__deletebutton">delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
 </html>

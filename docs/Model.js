@@ -1,9 +1,9 @@
 let ID = 1;
 class Photo {
-  constructor(desctiption, photoLink, date, hashtags, likes, author) {
+  constructor(description, photoLink, date, hashtags, likes, author) {
     this.id = `${ID}`;
     ID += 1;
-    this.desctiption = desctiption;
+    this.description = description;
     this.photoLink = photoLink;
     this.createdAt = date;
     this.hashtags = hashtags.split(' ');
@@ -13,7 +13,7 @@ class Photo {
 }
 
 function generate() {
-  const desctiptions = ['Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime magnam libero similique.',
+  const descriptions = ['Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime magnam libero similique.',
     'Molestiae vel rem cumque reiciendis adipisci nesciunt perspiciatis aspernatur aliquam!',
     'Maxime magnam libero similique, molestiae vel rem cumque reiciendis adipisci nesciunt.'];
   const photoLinks = ['./img/users.svg', './img/userM.svg', './img/userF.svg', './img/photo.svg'];
@@ -31,7 +31,7 @@ function generate() {
     }
     photoPosts[i] = {};
     photoPosts[i] = new Photo(
-      desctiptions[Math.round(Math.random() * 100) % 3],
+      descriptions[Math.round(Math.random() * 100) % 3],
       photoLinks[(Math.round(Math.random() * 100)) % 4],
       new Date(`2018-02-${(Math.round(Math.random() * 100) % 18) + 10}T${(Math.round(Math.random() * 100) % 11) + 10}:${(Math.round(Math.random() * 100) % 49) + 10}:${(Math.round(Math.random() * 100) % 49) + 10}`),
       hashtagsC,
@@ -107,14 +107,14 @@ class Model {
         }
       }
     }
-    if (editParams.desctiption !== undefined && typeof (editParams.desctiption) !== 'string') {
+    if (editParams.description !== undefined && typeof (editParams.description) !== 'string') {
       return false;
     }
     if (editParams.hashtags !== undefined) {
       photoPost.hashtags = editParams.hashtags;
     }
-    if (editParams.desctiption !== undefined) {
-      photoPost.desctiption = editParams.desctiption;
+    if (editParams.description !== undefined) {
+      photoPost.description = editParams.description;
     }
     return true;
   }

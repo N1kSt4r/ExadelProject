@@ -444,7 +444,8 @@ button {
   height: 60px;
   /*background-color: rgb(220, 220, 220);*/
 }
-.image-form__info__author__content {
+.image-form__info__author__content__name,
+.image-form__info__author__content__date {
   text-align: center;
   color: white;
   font-size: 17px;
