@@ -498,3 +498,16 @@ button {
   margin: 5px;
   font-size: 4vmin;
 }
+
+.login-form__OK, .login-form__login, .login-form__pass {
+  margin: 15px 0;
+}
+.login-form__OK {
+  border: none;
+}
+.login-form__label {
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  margin-bottom: 15px
+}
