@@ -65,6 +65,7 @@ class View {
   showPhoto(img) {
     const photoPost = this._gallery.get(img.id);
     const popupWindow = document.querySelector('.viewImage').content.cloneNode(true);
+  
     
     document.body.appendChild(popupWindow);
     document.body.querySelector('.likes').innerHTML = `${photoPost.likes.length} likes`;
@@ -91,8 +92,8 @@ class View {
       }
     }, 0);
     
-
     document.getElementById('overlay').addEventListener('click', (evt) => {
+      console.log(evt.target);
       if (evt.target.className.includes('deletebutton')) {
         this.deletePhotoPost(img);
         document.body.removeChild(document.getElementById('overlay'));
