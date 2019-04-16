@@ -20,10 +20,12 @@
    wrap-iife: 2
    guard-for-in: 2
    strict: [2, "global"]
-   no-alert: 2
+   no-alert: 0
    camelcase: 1
    curly: [2, "all"]
    eqeqeq: ["error", "always", {"null": "ignore"}]
+   no-param-reassign: 0
+   class-methods-use-this: 0
    no-empty: 2
    no-use-before-define: 2
    no-obj-calls: 2
@@ -32,7 +34,7 @@
    no-shadow: 1
    no-invalid-regexp: 2
    comma-dangle: [1, "never"]
-   no-undef: 2
+   no-undef: 0
    no-new: 2
    no-extra-semi: 2
    no-debugger: 2
@@ -55,4 +57,4 @@
    prefer-const: 2
    no-underscore-dangle: 0
    linebreak-style: ["error", "windows"]
-   class-methods-use-this: ["error", "never"]
+   consistent-return: 0

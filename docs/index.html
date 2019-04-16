@@ -1,27 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>User Name</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="index.css">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>User Name</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="index.css">
   </head>
-<body>
+  <body>
     <header class="header">
       <img class="header__logo" src="./img/ico.svg" alt="icon">
       <p class="header__sitename">sitename</p>
       <p class="header__userinfo__name">User Name</p>
       <img class="header__userinfo__avatar" src="./img/userF.svg" alt="icon">
-      <input class="header__search" type="search" placeholder="Search...">
-      <button class="header__search__button">
-        <img class="header__search__ico" src="./img/search.svg" alt="icon">
-      </button>
+      <form class="header__search__form" action="" >
+        <input class="header__search" placeholder="Search...">
+        <button class="header__search__button">
+          <img class="header__search__ico" src="./img/search.svg" alt="icon">
+        </button>
+      </form>
     </header>
     <article class="user">
       <section class="user__info">
         <h3 class="user__info__name">User Name</h3>
-        <p class="user__info__description">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime magnam libero similique, molestiae vel rem cumque reiciendis adipisci nesciunt perspiciatis aspernatur aliquam nemo incidunt laborum dolorum quae! Excepturi, maxime asperiores!
+        <p class="user__info__description">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Maxime magnam libero similique, molestiae vel rem cumque reiciendis adipisci nesciunt perspiciatis aspernatur aliquam nemo incidunt laborum dolorum quae! Excepturi, maxime asperiores!
         </p>
       </section>
       <section class="user__zone">
@@ -31,22 +34,50 @@
         <p class="user__zone__info">x followers</p>
         <p class="user__zone__info">x followings</p>
       </section>
-      <section class="gallery">
-        <!--
-        <img class="gallery__photo" src="./img/users.svg" alt="icon">
-        <img class="gallery__photo" src="./img/userM.svg" alt="icon">
-        <img class="gallery__photo" src="./img/userM.svg" alt="icon">
-        <img class="gallery__photo" src="./img/userF.svg" alt="icon">
-        <img class="gallery__photo" src="./img/users.svg" alt="icon">
-        -->
-      </section>
+      <section class="gallery"></section>
       <button class="gallery__button">Load more...</button>
     </article>
     <footer class="footer">
       <p class="footer__info">Никита Цуранов<br/>2 курс, 6 группа</p>
       <p class="footer__email">nikita2000tsuranov@gmail.com</p>
-      <p class="footer__about">sitename, 25.03.2019</p>
+      <p class="footer__about">sitename, 14.04.2019</p>
     </footer>
-    <script src="./script.js"></script>
-</body>
+    <script src="./Model.js"></script>
+    <script src="./View.js"></script>
+    <script src="./Controller.js"></script>
+  </body>
+  <template class="viewImage">
+    <div class="image-form-overlay flex transitable-opacity" id="overlay">
+      <div class="image-form__content transitable-opacity">
+        <div class="image-form__imageCon">
+          <img class="image-form__image">
+          <div class="overlay__likes">
+            <div class="likes"></div>
+          </div>
+        </div>
+        <div class="image-form__info">
+          <div class="image-form__info__author">
+            <p class="image-form__info__author__content__name"></p>
+            <p class="image-form__info__author__content__date"></p>
+          </div>
+          <p class="image-form__info__description"></p>
+          <p class="image-form__info__tags"></p>
+          <div class="flex button-container">
+            <button class="image-form__info__description image-form__editbutton">edit</button>
+            <button class="image-form__info__description image-form__deletebutton">delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template class="loginForm">
+    <div class="image-form-overlay flex transitable-opacity" id="overlay">
+      <div class="login-form__wrapper">
+        <p class="login-form__label">Login</p>
+        <input class="image-form__info__tags__area login-form__login" style="opacity: 1" maxlength="50" placeholder="login"></input>
+        <input class="image-form__info__tags__area login-form__pass" maxlength="50" placeholder="password"></input>
+        <button class="image-form__info__description login-form__OK">OK</button>
+      </div>
+    </div>
+  </template>
 </html>
