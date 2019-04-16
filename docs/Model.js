@@ -39,24 +39,29 @@ function generate() {
       photoAuthors[Math.round(Math.random() * 100) % 3]
     );
   }
-  return photoPosts;
+  localStorage.setItem('sitenameData', JSON.stringify(photoPosts));
 }
 
 class Model {
-  constructor() {
+  constructor(data) {
     this._photoPosts = [];
     this._shown = { count: 0 };
-    this.setAll(generate());
+    this.setAll(data);
   }
+
   shown() {
     return this._shown.count;
   }
+
   setAll(photos) {
-    this._photoPosts.splice(0, this._photoPosts.length);
+    this._photoPosts = [];
+    // this._photoPosts.splice(0, this._photoPosts.length);
     photos.forEach((photo) => {
+      photo.createdAt = new Date(Date.parse(photo.createdAt));
       this.add(photo);
     });
   }
+
   getPage(skip, top, filterConfig) {
     const skipt = skip || 0;
     let topt = top || 10;
@@ -71,6 +76,7 @@ class Model {
     this._shown.count = i;
     return result;
   }
+
   get(id) {
     for (let i = 0; i < this.size(); i += 1) {
       if (id.toString() === this._photoPosts[i].id) {
@@ -79,11 +85,14 @@ class Model {
     }
     return null;
   }
+
   add(photoPost) {
-    this._photoPosts[this.size()] = photoPost;
+    this._photoPosts.push(photoPost);
     this._photoPosts.sort((l, r) => r.createdAt.getTime() - l.createdAt.getTime());
+    localStorage.setItem('sitenameData', JSON.stringify(this._photoPosts));
     return true;
   }
+
   remove(id) {
     let i = 0;
     for (; i < this._photoPosts.length; i += 1) {
@@ -94,7 +103,9 @@ class Model {
     if (i < this._photoPosts.length) {
       this._photoPosts.splice(i, 1);
     }
+    localStorage.setItem('sitenameData', JSON.stringify(this._photoPosts));
   }
+
   edit(id, editParams) {
     const photoPost = this.get(id);
     if (!photoPost) {
@@ -116,11 +127,14 @@ class Model {
     if (editParams.description !== undefined) {
       photoPost.description = editParams.description;
     }
+    localStorage.setItem('sitenameData', JSON.stringify(this._photoPosts));
     return true;
   }
+
   size() {
     return this._photoPosts.length;
   }
+
   static compare(photoPost1, photoPost2) {
     if (photoPost1 === undefined) {
       return true;
@@ -147,5 +161,18 @@ class Model {
       return false;
     }
     return true;
+  }
+
+  likePhotoPost(id) {
+    const photo = this.get(id);
+    if (photo) {
+      const like = photo.likes.findIndex(like => like === localStorage.getItem('sitenameUser'));
+      if (like !== -1) {
+        photo.likes.splice(like, 1);
+      } else {
+        photo.likes.push(localStorage.getItem('sitenameUser'));
+      }
+    }
+    return photo.likes.length;
   }
 }
