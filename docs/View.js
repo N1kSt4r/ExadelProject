@@ -246,9 +246,6 @@ class View {
     }
     if (this._gallery.estimate(this._gallery._photoPosts[0]) === 0) {
       this.displayZeroPhoto();
-    } else {
-      /*const node = document.querySelector('.noPhotoMessage');
-      document.querySelector('.gallery').removeChild(node);*/
     }
     View.checkStatus();
   }
