@@ -1,12 +1,6 @@
 class Controller {
   constructor() {
     this._gallery = new View();
-    if (this._gallery.size() !== 0) {
-      this._gallery.loadMore();
-    } else {
-      this._gallery.displayZeroPhoto();
-    }
-    View.checkStatus();
   }
 
   static isLogged() {
@@ -49,6 +43,15 @@ class Controller {
       }
     }, false);
   }
+
+  submitSearch() {
+    document.querySelector('.header__search__form').addEventListener('submit', (event) => {
+      //  '1997-12-20'
+      alert(document.querySelector('.header__search').value.trim().split(/[ ]+/));
+      event.preventDefault();
+      this._gallery.forSearch(document.querySelector('.header__search').value.trim());
+    }, false);
+  }
 }
 
 const gallery = new Controller();
@@ -56,3 +59,4 @@ gallery.clickOnLoadMore();
 gallery.clickOnPhoto();
 gallery.clickOnFollowOrAddPhoto();
 gallery.clickOnLogin();
+gallery.submitSearch();

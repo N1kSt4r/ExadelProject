@@ -2,6 +2,12 @@ class View {
   constructor() {
     this._data = JSON.parse(localStorage.getItem('sitenameData'));
     this._gallery = new Model(this._data || []);
+    if (this.size() !== 0) {
+      this.loadMore();
+    } else {
+      this.displayZeroPhoto();
+    }
+    View.checkStatus();
   }
 
   size() {
@@ -9,8 +15,11 @@ class View {
   }
 
   checkGalleryButton() {
+    console.log(this._gallery.shown());
     if (this._gallery.shown() >= this.size()) {
       document.querySelector('.gallery__button').style.display = 'none';
+    } else {
+      document.querySelector('.gallery__button').style.display = 'block';
     }
   }
 
@@ -216,7 +225,8 @@ class View {
   }
 
   static checkStatus() {
-    //  ./img/ico.svg
+    document.querySelector('.header__userinfo__avatar')
+      .src = Controller.isLogged() ? './img/userF.svg' : './img/ico.svg';
     document.querySelector('.user__zone__followbutton')
       .innerHTML = Controller.isLogged() ? 'Add photo' : 'Follow';
     document.querySelector('.header__userinfo__name')
@@ -226,5 +236,20 @@ class View {
   likePhoto(img) {
     document.body.querySelector('.likes').innerHTML = `${this._gallery.likePhotoPost(img.id)} likes`;
     localStorage.setItem('sitenameData', JSON.stringify(this._gallery._photoPosts));
+  }
+
+  forSearch(request) {
+    this.reset();
+    this._gallery = new Model(this._data || [], request);
+    if (this.size() !== 0) {
+      this.loadMore();
+    }
+    if (this._gallery.estimate(this._gallery._photoPosts[0]) === 0) {
+      this.displayZeroPhoto();
+    } else {
+      /*const node = document.querySelector('.noPhotoMessage');
+      document.querySelector('.gallery').removeChild(node);*/
+    }
+    View.checkStatus();
   }
 }

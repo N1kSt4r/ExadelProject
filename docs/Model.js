@@ -43,10 +43,19 @@ function generate() {
 }
 
 class Model {
-  constructor(data) {
+  constructor(data, searchRequest) {
+    this._searchRequest = searchRequest || '';
     this._photoPosts = [];
     this._shown = { count: 0 };
     this.setAll(data);
+    this._photoPosts.sort((l, r) => {
+      const lValue = this.estimate(l);
+      const rValue = this.estimate(r);
+      if (lValue !== rValue) {
+        return rValue - lValue;
+      }
+      return r.createdAt.getTime() - l.createdAt.getTime();
+    });
   }
 
   shown() {
@@ -55,25 +64,27 @@ class Model {
 
   setAll(photos) {
     this._photoPosts = [];
-    // this._photoPosts.splice(0, this._photoPosts.length);
     photos.forEach((photo) => {
       photo.createdAt = new Date(Date.parse(photo.createdAt));
       this.add(photo);
     });
   }
 
-  getPage(skip, top, filterConfig) {
+  getPage(skip, top) {
     const skipt = skip || 0;
     let topt = top || 10;
     const result = [];
     let i = 0;
     for (i = skipt; topt !== 0 && i < this.size(); i += 1) {
-      if (Model.compare(filterConfig, this._photoPosts[i])) {
+      if (this.estimate(this._photoPosts[i]) > 0) {
         result.push(this._photoPosts[i]);
         topt -= 1;
       }
     }
     this._shown.count = i;
+    if (i + 1 < this.size() && this.estimate(this._photoPosts[i]) === 0) {
+      this._shown.count = this.size();
+    }
     return result;
   }
 
@@ -88,7 +99,7 @@ class Model {
 
   add(photoPost) {
     this._photoPosts.push(photoPost);
-    this._photoPosts.sort((l, r) => r.createdAt.getTime() - l.createdAt.getTime());
+    // this._photoPosts.sort((l, r) => r.createdAt.getTime() - l.createdAt.getTime());
     localStorage.setItem('sitenameData', JSON.stringify(this._photoPosts));
     return true;
   }
@@ -163,12 +174,36 @@ class Model {
     return true;
   }
 
+  estimate(photoPost) {
+    this._searchRequest = this._searchRequest.trim();
+    if (this._searchRequest === '') {
+      return 1;
+    }
+
+    const searchRequest = this._searchRequest.split(/[ ]+/);
+    let value = 0;
+    searchRequest.forEach((word) => {
+      if (word[0] === '#') {
+        word = word.substring(1).toLowerCase();
+        for (let i = 0; i < photoPost.hashtags.length; i += 1) {
+          if (photoPost.hashtags[i].toLowerCase() === word) {
+            value += 1;
+          }
+        }
+      } else {
+        value += photoPost.author.includes(word) ? 1 : 0;
+      }
+    }, false);
+
+    return value;
+  }
+
   likePhotoPost(id) {
     const photo = this.get(id);
     if (photo) {
-      const like = photo.likes.findIndex(like => like === localStorage.getItem('sitenameUser'));
-      if (like !== -1) {
-        photo.likes.splice(like, 1);
+      const likeIndex = photo.likes.findIndex(like => like === localStorage.getItem('sitenameUser'));
+      if (likeIndex !== -1) {
+        photo.likes.splice(likeIndex, 1);
       } else {
         photo.likes.push(localStorage.getItem('sitenameUser'));
       }
