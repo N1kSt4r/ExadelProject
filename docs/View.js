@@ -15,7 +15,6 @@ class View {
   }
 
   checkGalleryButton() {
-    console.log(this._gallery.shown());
     if (this._gallery.shown() >= this.size()) {
       document.querySelector('.gallery__button').style.display = 'none';
     } else {
@@ -205,7 +204,7 @@ class View {
           document.body.removeChild(document.getElementById('overlay'));
           return;
         }
-        alert('Неправильный логин или пароль');
+        alert('Incorrect login or password');
       }
       if (evt.target.className.includes('login-form')) {
         return;

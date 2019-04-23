@@ -47,7 +47,6 @@ class Controller {
   submitSearch() {
     document.querySelector('.header__search__form').addEventListener('submit', (event) => {
       //  '1997-12-20'
-      alert(document.querySelector('.header__search').value.trim().split(/[ ]+/));
       event.preventDefault();
       this._gallery.forSearch(document.querySelector('.header__search').value.trim());
     }, false);
