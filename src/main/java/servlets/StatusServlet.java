@@ -14,7 +14,7 @@ public class StatusServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        req.setAttribute("context", "Application is running");
+        req.setAttribute("context", "<h1 style='color: red'>Application is running</h1>");
         req.getRequestDispatcher("myPage.jsp").forward(req, resp);
     }
 }

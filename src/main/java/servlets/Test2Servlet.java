@@ -13,6 +13,6 @@ public class Test2Servlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/page").forward(req, resp);
+        resp.sendRedirect(req.getContextPath() + "/page");
     }
 }
