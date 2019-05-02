@@ -12,13 +12,12 @@ public class GetName extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+            throws IOException {
         String query = req.getQueryString();
-        req.setAttribute(
-                "context", query.matches("name=[(%20)\\w]{1,100}")
+        resp.getOutputStream().print(
+                query.matches("name=[(%20)\\w]{1,100}")
                         ? "Name is " + query.substring(5).replaceAll("[(%20)]+", " ").trim()
                         : "Invalid request"
         );
-        req.getRequestDispatcher("myPage.jsp").forward(req, resp);
     }
 }
