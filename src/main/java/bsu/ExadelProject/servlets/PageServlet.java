@@ -1,4 +1,4 @@
-package servlets;
+package bsu.ExadelProject.servlets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +13,6 @@ public class PageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/page.html").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/page.html").forward(req, resp);
     }
 }

@@ -1,4 +1,4 @@
-package servlets;
+package bsu.ExadelProject.servlets;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

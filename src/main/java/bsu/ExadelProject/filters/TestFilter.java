@@ -1,4 +1,4 @@
-package filters;
+package bsu.ExadelProject.filters;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
