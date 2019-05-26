@@ -1,0 +1,1 @@
+select * from USER.NAME group by NAME;

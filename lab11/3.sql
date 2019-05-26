@@ -1,0 +1,1 @@
+select * from PhotoPost where USER_ID=9 AND CREATION_DATE = '2019.05.01'

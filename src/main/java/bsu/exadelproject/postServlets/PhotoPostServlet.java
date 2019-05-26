@@ -1,18 +1,19 @@
-package bsu.ExadelProject.servlets;
+package bsu.exadelproject.postServlets;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/test2")
-public class Test2Servlet extends HttpServlet {
-
+@WebServlet("/photo-post")
+public class PhotoPostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        resp.sendRedirect(req.getContextPath() + "/page");
+            throws IOException {
+
+        resp.getOutputStream().print(
+                "Name is " + req.getParameter("name")
+        );
     }
 }
