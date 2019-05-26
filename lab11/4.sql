@@ -1,0 +1,1 @@
+select * from PhotoPost where USER_ID = 6 and DESCRIPTION like '%hello%';

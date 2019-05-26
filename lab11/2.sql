@@ -1,0 +1,1 @@
+Select * from PhotoPost where USER_ID = 6;
